@@ -1,4 +1,4 @@
-import { ShoppingCart, Home, Store, User } from 'lucide-react';
+import { ShoppingCart, Home, Store } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
@@ -22,17 +22,14 @@ export default function Navbar({ cartCount }) {
         >
           <Home size={18} /> Inicio
         </Link>
+
         <Link
           to="/products"
-          className={`nav-item ${location.pathname === '/products' ? 'active' : ''}`}
+          className={`nav-item ${
+            location.pathname === '/products' ? 'active' : ''
+          }`}
         >
           <Store size={18} /> Productos
-        </Link>
-        <Link
-          to="/account"
-          className={`nav-item ${location.pathname === '/account' ? 'active' : ''}`}
-        >
-          <User size={18} /> Cuenta
         </Link>
       </div>
 

@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
-import Footer from "./components/Footer";   // ← 🔥 AGREGADO
+import Footer from "./components/Footer";
 
 export default function App() {
   const [cart, setCart] = useState([]);
@@ -25,8 +25,10 @@ export default function App() {
         <Navbar cartCount={cart.length} />
 
         <Routes>
+          {/* Página inicial */}
           <Route path="/" element={<Home />} />
 
+          {/* Rutas normales */}
           <Route 
             path="/products" 
             element={<Products addToCart={addToCart} />} 
@@ -43,14 +45,17 @@ export default function App() {
               <Cart
                 cart={cart}
                 removeFromCart={removeFromCart}
-                setCart={setCart}   // ← NECESARIO
+                setCart={setCart}
               />
             }
           />
+
+          {/* 🔥 CATCH-ALL: cualquier URL invalida → Inicio */}
+          <Route path="*" element={<Home />} />
         </Routes>
       </Router>
 
-      {/* 🔥 FOOTER GLOBAL */}
+      {/* Footer global */}
       <Footer />
     </>
   );
