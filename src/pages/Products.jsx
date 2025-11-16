@@ -5,56 +5,42 @@ import "./Products.css";
 export default function Products({ addToCart }) {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  const [material, setMaterial] = useState("");
   const [sort, setSort] = useState("price,asc");
 
-  // 🔥 Cargar productos desde API
+  // 🔥 Cargar productos desde FakeStoreAPI
   useEffect(() => {
-    fetch("https://api.escuelajs.co/api/v1/products")
+    fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
       .then((data) => {
-        let clothing = data.filter(
+
+        // 🔥 Mantener solo ropa
+        let filtered = data.filter(
           (p) =>
-            p.category?.name === "Clothes" ||
-            p.category?.name === "Shoes" ||
-            p.category?.name === "Others"
+            p.category === "men's clothing" ||
+            p.category === "women's clothing"
         );
 
-        // filtros eliminando basura
-        clothing = clothing.filter((p) => {
-          const title = p.title?.toLowerCase() || "";
-          const isFake =
-            title.includes("mohammad") ||
-            title.includes("_") ||
-            title.length < 4 ||
-            p.images?.[0]?.includes("placehold") ||
-            p.images?.[0]?.includes("600") ||
-            !p.images?.[0] ||
-            p.price === 0;
-
-          return !isFake;
+        // 🔥 Validar imagen real
+        filtered = filtered.filter((p) => {
+          const img = p.image || "";
+          return img && img.length > 10;
         });
 
-        clothing = clothing.filter(
-          (p) => p.images && p.images[0] && p.images[0].length > 10
-        );
+        // 🔥 Validar título válido
+        filtered = filtered.filter((p) => {
+          const title = p.title?.toLowerCase() || "";
+          return title.length > 4 && !title.includes("backpack") && !title.includes("bag");
+        });
 
-        setProducts(clothing);
-      })
-      .catch((err) => console.error("Error cargando productos:", err));
+        setProducts(filtered);
+      });
   }, []);
 
-  // filtros + orden
+  // 🔥 Búsqueda + orden
   const filtered = useMemo(() => {
     let result = products.filter((p) =>
       p.title.toLowerCase().includes(search.toLowerCase())
     );
-
-    if (material !== "") {
-      result = result.filter((p) =>
-        p.description?.toLowerCase().includes(material.toLowerCase())
-      );
-    }
 
     const [key, direction] = sort.split(",");
     result.sort((a, b) =>
@@ -62,31 +48,27 @@ export default function Products({ addToCart }) {
     );
 
     return result;
-  }, [products, search, material, sort]);
+  }, [products, search, sort]);
 
   return (
     <div className="wrapper">
       <div className="page-head">
-        <Link to="/" className="back-btn">
-          <i className="fa-solid fa-arrow-left"></i> Volver a Inicio
-        </Link>
+        <Link to="/" className="back-btn">← Volver a Inicio</Link>
         <h1>✨ Ropa y Moda ✨</h1>
       </div>
 
       <div className="toolbar">
-        <div className="filters">
-          <input
-            type="text"
-            placeholder="Buscar prenda..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <input
+          type="text"
+          placeholder="Buscar prenda..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
-            <option value="price,asc">Precio ↑</option>
-            <option value="price,desc">Precio ↓</option>
-          </select>
-        </div>
+        <select value={sort} onChange={(e) => setSort(e.target.value)}>
+          <option value="price,asc">Precio ↑</option>
+          <option value="price,desc">Precio ↓</option>
+        </select>
 
         <div className="meta-chip">{filtered.length} prenda(s)</div>
       </div>
@@ -94,20 +76,21 @@ export default function Products({ addToCart }) {
       <div className="grid">
         {filtered.map((p) => (
           <div key={p.id} className="card">
+
             <div className="media">
               <img
-                src={p.images?.[0]}
+                src={p.image}
                 alt={p.title}
                 onError={(e) =>
-                  (e.target.src =
-                    "https://via.placeholder.com/600x400?text=Sin+imagen")
+                  e.target.src =
+                    "https://via.placeholder.com/500x400?text=Sin+imagen"
                 }
               />
             </div>
 
             <div className="card-body">
               <div className="card-title">{p.title}</div>
-              <div className="card-sub">{p.category?.name}</div>
+              <div className="card-sub">{p.category}</div>
               <div className="card-price">${p.price}</div>
             </div>
 
@@ -123,13 +106,14 @@ export default function Products({ addToCart }) {
                     id: p.id,
                     name: p.title,
                     price: p.price,
-                    imageUrl: p.images?.[0],
+                    imageUrl: p.image,
                   })
                 }
               >
                 Agregar al carrito
               </button>
             </div>
+
           </div>
         ))}
       </div>
