@@ -18,7 +18,7 @@ export default function Home() {
         position: "relative",
       }}
     >
-      {/* Capa oscura para que el texto resalte */}
+      {/* Capa oscura para el texto */}
       <div
         style={{
           position: "absolute",
@@ -37,7 +37,7 @@ export default function Home() {
             marginBottom: "10px",
           }}
         >
-          Bienvenido a Paradiise Store ✨
+          Bienvenido a Paradiise Store 
         </h1>
 
         <p

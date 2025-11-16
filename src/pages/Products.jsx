@@ -7,26 +7,26 @@ export default function Products({ addToCart }) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("price,asc");
 
-  // 🔥 Cargar productos desde FakeStoreAPI
+  //  Cargar productos desde FakeStoreAPI
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
       .then((data) => {
 
-        // 🔥 Mantener solo ropa
+        //  Mantener solo ropa
         let filtered = data.filter(
           (p) =>
             p.category === "men's clothing" ||
             p.category === "women's clothing"
         );
 
-        // 🔥 Validar imagen real
+        //  Validar imagen real
         filtered = filtered.filter((p) => {
           const img = p.image || "";
           return img && img.length > 10;
         });
 
-        // 🔥 Validar título válido
+        //  Validar título válido
         filtered = filtered.filter((p) => {
           const title = p.title?.toLowerCase() || "";
           return title.length > 4 && !title.includes("backpack") && !title.includes("bag");
@@ -36,7 +36,7 @@ export default function Products({ addToCart }) {
       });
   }, []);
 
-  // 🔥 Búsqueda + orden
+  //  Búsqueda + orden
   const filtered = useMemo(() => {
     let result = products.filter((p) =>
       p.title.toLowerCase().includes(search.toLowerCase())
@@ -54,7 +54,7 @@ export default function Products({ addToCart }) {
     <div className="wrapper">
       <div className="page-head">
         <Link to="/" className="back-btn">← Volver a Inicio</Link>
-        <h1>✨ Ropa y Moda ✨</h1>
+        <h1> Ropa y Moda </h1>
       </div>
 
       <div className="toolbar">

@@ -50,7 +50,7 @@ export default function App() {
             }
           />
 
-          {/* 🔥 CATCH-ALL: cualquier URL invalida → Inicio */}
+          {/*  CATCH-ALL: cualquier URL invalida → Inicio */}
           <Route path="*" element={<Home />} />
         </Routes>
       </Router>

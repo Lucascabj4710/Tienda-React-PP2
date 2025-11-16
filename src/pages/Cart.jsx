@@ -5,7 +5,7 @@ export default function Cart({ cart, removeFromCart, setCart }) {
   const total = cart.reduce((acc, p) => acc + p.price, 0);
 
   const handlePurchase = () => {
-    alert("¡Compra realizada con éxito! 🛍️✨");
+    alert("¡Compra realizada con éxito! ");
     setCart([]);
     navigate("/");
   };
@@ -44,7 +44,7 @@ export default function Cart({ cart, removeFromCart, setCart }) {
           letterSpacing: "-0.5px",
         }}
       >
-        🛍️ Tu Carrito
+         Tu Carrito
       </h2>
 
       <div
